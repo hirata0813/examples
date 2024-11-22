@@ -22,6 +22,10 @@ def stop_gpu_process():
             print(f"Stopping GPU process with PID: {pid}")
             send_signal(pid, signal.SIGSTOP)
         print("GPU process has been stopped.")
+
+        # SIGSTOP送信時のタイムスタンプを取得
+        with open("signal_ts","a") as f:
+            print("SIGSTOP: {}".format(time.time()), file=f) 
     
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -38,12 +42,16 @@ def cont_gpu_process():
             print("GPU process is not running.")
             return
         
-        # 見つかったすべてのプロセスを停止
+        # 見つかったすべてのプロセスを再開
         for pid in pids:
             print(f"Continuing GPU process with PID: {pid}")
             send_signal(pid, signal.SIGCONT)
         print("GPU process has been continued.")
     
+        # SIGCONT送信時のタイムスタンプを取得
+        with open("signal_ts","a") as f:
+            print("SIGCONT: {}".format(time.time()), file=f) 
+
     except Exception as e:
         print(f"An error occurred: {e}")
 
