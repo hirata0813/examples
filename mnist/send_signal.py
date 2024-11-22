@@ -10,6 +10,8 @@ def stop_gpu_process():
         # 実行中のプロセスを検索
         result = subprocess.run(["pgrep", "-f", "main.py"], capture_output=True, text=True)
         pids = result.stdout.strip().split("\n")
+        current_pid = os.getpid() # 自身のPIDを取得
+        pids = [pid for pid in pids if pid and int(pid) != current_pid] # pidsから自身のPIDを除外
         
         if not pids or pids == ['']:
             print("GPU process is not running.")
@@ -29,6 +31,8 @@ def cont_gpu_process():
         # 実行中のプロセスを検索
         result = subprocess.run(["pgrep", "-f", "main.py"], capture_output=True, text=True)
         pids = result.stdout.strip().split("\n")
+        current_pid = os.getpid() # 自身のPIDを取得
+        pids = [pid for pid in pids if pid and int(pid) != current_pid] # pidsから自身のPIDを除外
         
         if not pids or pids == ['']:
             print("GPU process is not running.")
@@ -52,7 +56,14 @@ def send_signal(pid, signal):
 
 def control_gpu_process():
     # ここでGPUプログラムの停止・再開を行う
-    # GPU プログラムはこのプログラムを呼び出すだけで良い
     stop_gpu_process()
-    #time.sleep(1) 
+    time.sleep(5)
     cont_gpu_process()
+
+def main():
+    control_gpu_process()
+
+if __name__ == '__main__':
+    # GPU プログラムはこのプログラムを実行するだけで良い
+    # 逆にメソッドとして呼び出すと，このプログラムがプロセスとして生成されずうまく停止・再開できない
+    main()

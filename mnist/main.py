@@ -7,7 +7,6 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 import subprocess
-import send_signal
 
 
 class Net(nn.Module):
@@ -158,8 +157,8 @@ def main():
         train(args, model, device, train_loader, optimizer, epoch)
         test(model, device, test_loader)
         scheduler.step()
-        # 停止・再開を行う
-        send_signal.control_gpu_process()
+        # 停止・再開を行うプロセスを実行
+        subprocess.run(["./send_signal.py"])
 
     if args.save_model:
         torch.save(model.state_dict(), "mnist_cnn.pt")
