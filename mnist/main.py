@@ -5,6 +5,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
+import subprocess
 
 
 class Net(nn.Module):
@@ -68,6 +69,26 @@ def test(model, device, test_loader):
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
 
+def stop_nvidia_smi():
+    try:
+        # 実行中のプロセスを検索
+        result = subprocess.run(["pgrep", "-f", "nvidia-smi"], capture_output=True, text=True)
+        pids = result.stdout.strip().split("\n")
+        
+        if not pids or pids == ['']:
+            print("nvidia-smi is not running.")
+            return
+        
+        # 見つかったすべてのプロセスを停止
+        for pid in pids:
+            print(f"Stopping nvidia-smi process with PID: {pid}")
+            subprocess.run(["kill", "-TERM", pid])
+        print("nvidia-smi has been stopped.")
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
 
 def main():
     # Training settings
@@ -76,7 +97,7 @@ def main():
                         help='input batch size for training (default: 64)')
     parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                         help='input batch size for testing (default: 1000)')
-    parser.add_argument('--epochs', type=int, default=14, metavar='N',
+    parser.add_argument('--epochs', type=int, default=3, metavar='N',
                         help='number of epochs to train (default: 14)')
     parser.add_argument('--lr', type=float, default=1.0, metavar='LR',
                         help='learning rate (default: 1.0)')
@@ -142,3 +163,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # nvidia-smi を停止
+    stop_nvidia_smi()
