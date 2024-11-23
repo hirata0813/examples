@@ -24,8 +24,8 @@ def stop_gpu_process():
         print("GPU process has been stopped.")
 
         # SIGSTOP送信時のタイムスタンプを取得
-        with open("signal_ts","a") as f:
-            print("SIGSTOP: {}".format(time.time()), file=f) 
+        with open("sigstop_ts","a") as f:
+            print("{}".format(time.time()), file=f) 
     
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -49,8 +49,8 @@ def cont_gpu_process():
         print("GPU process has been continued.")
     
         # SIGCONT送信時のタイムスタンプを取得
-        with open("signal_ts","a") as f:
-            print("SIGCONT: {}".format(time.time()), file=f) 
+        with open("sigcont_ts","a") as f:
+            print("{}".format(time.time()), file=f) 
 
     except Exception as e:
         print(f"An error occurred: {e}")
