@@ -158,7 +158,7 @@ def main():
         test(model, device, test_loader)
         scheduler.step()
         # 停止・再開を行うプロセスを実行
-        subprocess.run(["./send_signal.py"])
+        #subprocess.run(["./send_signal.py"])
 
     if args.save_model:
         torch.save(model.state_dict(), "mnist_cnn.pt")
