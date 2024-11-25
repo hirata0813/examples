@@ -24,8 +24,8 @@ def stop_gpu_process():
         print("GPU process has been stopped.")
 
         # SIGSTOP送信時のタイムスタンプを取得
-        with open("sigstop_ts","a") as f:
-            print("{}".format(time.time()), file=f) 
+        with open("sigstop.log","a") as f:
+            print("{}".format(time.time()), file=f)
     
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -49,15 +49,15 @@ def cont_gpu_process():
         print("GPU process has been continued.")
     
         # SIGCONT送信時のタイムスタンプを取得
-        with open("sigcont_ts","a") as f:
-            print("{}".format(time.time()), file=f) 
+        with open("sigcont.log","a") as f:
+            print("{}".format(time.time()), file=f)
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
 def send_signal(pid, signal):
     try:
-        os.kill(int(pid), signal) 
+        os.kill(int(pid), signal)
     except OSError as e:
         if e.errno != errno.ESRCH: #「No such process」じゃない場合
             raise e
