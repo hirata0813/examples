@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 # coding: utf-8
 import argparse
 import time
@@ -6,6 +7,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.onnx
+import subprocess
 
 import data
 import model
@@ -213,6 +215,25 @@ def export_onnx(path, batch_size, seq_len):
     hidden = model.init_hidden(batch_size)
     torch.onnx.export(model, (dummy_input, hidden), path)
 
+def stop_nvidia_smi():
+    try:
+        # 実行中のプロセスを検索
+        result = subprocess.run(["pgrep", "-f", "nvidia-smi"], capture_output=True, text=True)
+        pids = result.stdout.strip().split("\n")
+        
+        if not pids or pids == ['']:
+            print("nvidia-smi is not running.")
+            return
+        
+        # 見つかったすべてのプロセスを停止
+        for pid in pids:
+            print(f"Stopping nvidia-smi process with PID: {pid}")
+            subprocess.run(["kill", "-TERM", pid])
+        print("nvidia-smi has been stopped.")
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 
 # Loop over epochs.
 lr = args.lr
@@ -260,3 +281,6 @@ print('=' * 89)
 if len(args.onnx_export) > 0:
     # Export the model in ONNX format.
     export_onnx(args.onnx_export, batch_size=1, seq_len=args.bptt)
+
+# nvidia-smi を停止
+stop_nvidia_smi()
