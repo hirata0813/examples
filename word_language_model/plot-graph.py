@@ -52,19 +52,26 @@ def set_axisopts(axis, axis2, xlabel, ylabel1, ylabel2):
 def plot_line(ax, ax2, sigstopfile, sigcontfile, epochfile):
     sigstoplist = create_tslist(sigstopfile)
 
-    for sigstop in sigstoplist:
-        ax.axvline(sigstop, color='green', linestyle='dashed', linewidth=1)
-        ax2.text(sigstop, 30, "停止", rotation=45, color='green', fontsize=12, va='bottom')
+    for i, sigstop in enumerate(sigstoplist):
+        if i == 0:
+            ax.axvline(sigstop, color='green', linestyle='dashed', linewidth=1, label="停止")
+        else:
+            ax.axvline(sigstop, color='green', linestyle='dashed', linewidth=1)
 
 
     sigcontlist = create_tslist(sigcontfile)
-    for sigcont in sigcontlist:
-        ax.axvline(sigcont, color='purple', linestyle='dashed', linewidth=1)
-        ax2.text(sigcont, 30, "再開", rotation=45, color='purple', fontsize=12, va='bottom')
+    for i, sigcont in enumerate(sigcontlist):
+        if i == 0:
+            ax.axvline(sigcont, color='purple', linestyle='dashed', linewidth=1, label="再開")
+        else:
+            ax.axvline(sigcont, color='purple', linestyle='dashed', linewidth=1)
 
     epochlist = create_tslist(epochfile)
-    for epoch in epochlist:
-        ax.axvline(epoch, color='red', linestyle='dashed', linewidth=1)
+    for i, epoch in enumerate(epochlist):
+        if i == 0:
+            ax.axvline(epoch, color='red', linestyle='dashed', linewidth=1, label="エポック終了")
+        else:
+            ax.axvline(epoch, color='red', linestyle='dashed', linewidth=1)
 
 def main():
     fig, ax = plt.subplots()
@@ -86,6 +93,7 @@ def main():
     # エポック終了時，シグナル送信時のタイミングで縦線を引く
     plot_line(ax, ax2, args[4], args[5], args[6])
 
+    plt.legend()
     #fig.savefig('figs/graph2.svg', bbox_inches='tight')
     plt.show()
 
