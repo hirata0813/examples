@@ -43,8 +43,8 @@ def set_axisopts(axis, axis2, xlabel, ylabel1, ylabel2):
     axis.set_xlabel(xlabel)
     axis.set_ylabel(ylabel1)
     axis2.set_ylabel(ylabel2)
-    axis.set_xlim(0,100)
-    axis.set_xticks(np.arange(0, 101, step=5))
+    axis.set_xlim(0,76)
+    axis.set_xticks(np.arange(0, 76, step=5))
     axis2.set_ylim(0,100)
     axis2.set_yticks(np.arange(0, 101, step=5))
 
@@ -79,12 +79,17 @@ def main():
 
     args = sys.argv
 
-    set_axisopts(ax, ax2, args[3]+"実行開始からの経過時間 (s)", "/dev/shm/*", "GPU 稼働率 (%)")
+    set_axisopts(ax, ax2, args[3]+"実行開始からの経過時間 (s)", "ファイル", "GPU 稼働率 (%)")
 
     # /dev/shm下ファイルへのアクセス履歴を描画
     tslist = create_tslist(args[1])
-    filelist = ["/dev/shm下ファイル群"] * len(tslist)
+    filelist = ["/dev/shm/*"] * len(tslist)
     ax.scatter(tslist, filelist, s=20, marker=".", color="red")
+
+    # /dev/nvidia-uvmへのアクセス履歴を描画
+    tslist = create_tslist(args[7])
+    filelist = ["nvidia-uvm"] * len(tslist)
+    ax.scatter(tslist, filelist, s=20, marker=".", color="brown")
 
     # GPU 使用率を折れ線グラフとして描画
     x, y = create_util_ts(args[2])
@@ -93,7 +98,8 @@ def main():
     # エポック終了時，シグナル送信時のタイミングで縦線を引く
     plot_line(ax, ax2, args[4], args[5], args[6])
 
-    plt.legend()
+    ax.legend(loc='lower right')
+
     #fig.savefig('figs/graph2.svg', bbox_inches='tight')
     plt.show()
 

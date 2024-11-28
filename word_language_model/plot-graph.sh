@@ -28,4 +28,4 @@ $PWD/calc-sigts.sh syscall.log sigcont.log sigcont_ts
 # 第四引数：SIGSTOPの送信履歴(要素数3のリスト)
 # 第五引数：SIGCONTの送信履歴(要素数3のリスト)
 # グラフ描画
-$PWD/plot-graph.py shmfile_ts utilization_ts "調査対象プログラム1" sigstop_ts sigcont_ts epoch_ts
+$PWD/plot-graph.py shmfile_ts utilization_ts "調査対象プログラム1" sigstop_ts sigcont_ts epoch_ts nvidia-uvm_ts
