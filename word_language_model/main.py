@@ -251,7 +251,7 @@ try:
                                            val_loss, math.exp(val_loss)))
         print('-' * 89)
         # エポック終了を検知するための処理
-        print("エポックが終了しました")
+        print("Epoch finished")
         # Save the model if the validation loss is the best we've seen so far.
         if not best_val_loss or val_loss < best_val_loss:
             with open(args.save, 'wb') as f:
