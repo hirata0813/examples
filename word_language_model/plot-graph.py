@@ -51,7 +51,6 @@ def set_axisopts(axis, axis2, xlabel, ylabel1, ylabel2):
 # グラフに停止・再開・エポック終了のタイミングを描画する関数
 def plot_line(ax, ax2, sigstopfile, sigcontfile, epochfile):
     sigstoplist = create_tslist(sigstopfile)
-
     for i, sigstop in enumerate(sigstoplist):
         if i == 0:
             ax.axvline(sigstop, color='green', linestyle='dashed', linewidth=1, label="停止")
@@ -79,7 +78,7 @@ def main():
 
     args = sys.argv
 
-    set_axisopts(ax, ax2, args[3]+"実行開始からの経過時間 (s)", "ファイル", "GPU 稼働率 (%)")
+    set_axisopts(ax, ax2, args[3]+"実行開始からの経過時間 (s)", "/dev/shm下ファイルへのアクセス", "GPU 稼働率 (%)")
 
     # /dev/shm下ファイルへのアクセス履歴を描画
     tslist = create_tslist(args[1])
@@ -96,9 +95,34 @@ def main():
     ax2.plot(x, y)
 
     # エポック終了時，シグナル送信時のタイミングで縦線を引く
-    plot_line(ax, ax2, args[4], args[5], args[6])
+    #plot_line(ax, ax2, args[4], args[5], args[6])
 
-    ax.legend(loc='lower right')
+    sigstopfile = args[4]
+    sigcontfile = args[5]
+    epochfile = args[6]
+
+    sigstoplist = create_tslist(sigstopfile)
+    for i, sigstop in enumerate(sigstoplist):
+        if i == 0:
+            plt.axvline(sigstop, color='green', linestyle='dashed', linewidth=1, label="停止")
+        else:
+            plt.axvline(sigstop, color='green', linestyle='dashed', linewidth=1)
+
+
+    sigcontlist = create_tslist(sigcontfile)
+    for i, sigcont in enumerate(sigcontlist):
+        if i == 0:
+            plt.axvline(sigcont, color='purple', linestyle='dashed', linewidth=1, label="再開")
+        else:
+            plt.axvline(sigcont, color='purple', linestyle='dashed', linewidth=1)
+
+    epochlist = create_tslist(epochfile)
+    for i, epoch in enumerate(epochlist):
+        if i == 0:
+            plt.axvline(epoch, color='red', linestyle='dashed', linewidth=1, label="エポック終了")
+        else:
+            plt.axvline(epoch, color='red', linestyle='dashed', linewidth=1)
+    plt.legend()
 
     #fig.savefig('figs/graph2.svg', bbox_inches='tight')
     plt.show()
