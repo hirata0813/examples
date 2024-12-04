@@ -23,6 +23,7 @@ def stop_nvidia_smi():
         print(f"An error occurred: {e}")
 
 def main():
+    print("Start...")
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--no-cuda', action='store_true', default=False,
@@ -47,7 +48,7 @@ def main():
 
 
     # 1000 x 1000のランダム行列を作成
-    matrix_size = 1000
+    matrix_size = 15000
     A = torch.randn(matrix_size, matrix_size)  # CPU上で作成
     B = torch.randn(matrix_size, matrix_size)
 

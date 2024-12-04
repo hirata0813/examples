@@ -8,7 +8,7 @@ import time
 def stop_gpu_process():
     try:
         # 実行中のプロセスを検索
-        result = subprocess.run(["pgrep", "-f", "main.py"], capture_output=True, text=True)
+        result = subprocess.run(["pgrep", "-f", "test1.py"], capture_output=True, text=True)
         pids = result.stdout.strip().split("\n")
         current_pid = os.getpid() # 自身のPIDを取得
         pids = [pid for pid in pids if pid and int(pid) != current_pid] # pidsから自身のPIDを除外
@@ -33,7 +33,7 @@ def stop_gpu_process():
 def cont_gpu_process():
     try:
         # 実行中のプロセスを検索
-        result = subprocess.run(["pgrep", "-f", "main.py"], capture_output=True, text=True)
+        result = subprocess.run(["pgrep", "-f", "test1.py"], capture_output=True, text=True)
         pids = result.stdout.strip().split("\n")
         current_pid = os.getpid() # 自身のPIDを取得
         pids = [pid for pid in pids if pid and int(pid) != current_pid] # pidsから自身のPIDを除外
@@ -65,7 +65,7 @@ def send_signal(pid, signal):
 def control_gpu_process():
     # ここでGPUプログラムの停止・再開を行う
     stop_gpu_process()
-    time.sleep(5)
+    time.sleep(1)
     cont_gpu_process()
 
 def main():
