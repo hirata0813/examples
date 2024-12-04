@@ -29,6 +29,8 @@ def main():
                         help='disables CUDA training')
     parser.add_argument('--no-mps', action='store_true', default=False,
                         help='disables macOS GPU training')
+    parser.add_argument('--seed', type=int, default=1, metavar='S',
+                        help='random seed (default: 1)')
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     use_mps = not args.no_mps and torch.backends.mps.is_available()
