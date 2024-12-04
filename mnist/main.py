@@ -3,13 +3,16 @@ import argparse
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
-from torchvision import datasets, transforms
+import torch.optim as optim # 最適化アルゴリズムを実装するモジュール
+from torchvision import datasets, transforms # MNISTのデータ取得，及び画像の前処理用
 from torch.optim.lr_scheduler import StepLR
 import subprocess
 
 
 class Net(nn.Module):
+    # CNN(畳み込みニューラルネットワーク)を定義
+    # __init__の中で各層を定義？
+    # 
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 32, 3, 1)
@@ -38,6 +41,7 @@ class Net(nn.Module):
 def train(args, model, device, train_loader, optimizer, epoch):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
+        # to()メソッドで GPU にデータを手渡している？
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
         output = model(data)
@@ -58,6 +62,7 @@ def test(model, device, test_loader):
     correct = 0
     with torch.no_grad():
         for data, target in test_loader:
+            # to()メソッドで GPU にデータを手渡している？
             data, target = data.to(device), target.to(device)
             output = model(data)
             test_loss += F.nll_loss(output, target, reduction='sum').item()  # sum up batch loss
@@ -149,6 +154,7 @@ def main():
     train_loader = torch.utils.data.DataLoader(dataset1,**train_kwargs)
     test_loader = torch.utils.data.DataLoader(dataset2, **test_kwargs)
 
+    # to()メソッドで GPU にデータを手渡している？
     model = Net().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
 
