@@ -58,3 +58,8 @@ def main():
     result = torch.matmul(A, B)
 
     print("Matrix multiplication completed.")
+
+if __name__ == '__main__':
+    main()
+    # nvidia-smi を停止
+    stop_nvidia_smi()
