@@ -51,6 +51,7 @@ def main():
     matrix_size = 15000
     A = torch.randn(matrix_size, matrix_size)  # CPU上で作成
     B = torch.randn(matrix_size, matrix_size)
+    C = torch.randn(matrix_size, matrix_size)
 
     # 行列を指定したデバイスに移動
     A = A.to(device)
@@ -59,6 +60,7 @@ def main():
     # 行列の積を計算
     print(f"Calculating matrix multiplication on {device}...")
     result = torch.matmul(A, B)
+    result2 = torch.matmul(result, C)
 
     print("Matrix multiplication completed.")
 
