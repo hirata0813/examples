@@ -163,6 +163,7 @@ def main():
         train(args, model, device, train_loader, optimizer, epoch)
         test(model, device, test_loader)
         scheduler.step()
+        print("Epoch finished")
         # 停止・再開を行うプロセスを実行
         #subprocess.run(["./send_signal.py"])
 
