@@ -48,7 +48,7 @@ def main():
 
 
     # 15000 x 15000のランダム行列を作成
-    matrix_size = 15000
+    matrix_size = 100
     A = torch.randn(matrix_size, matrix_size)  # CPU上で作成
     B = torch.randn(matrix_size, matrix_size)
 
@@ -56,9 +56,11 @@ def main():
     A = A.to(device)
     B = B.to(device)
 
-    # 行列の積を計算
     print(f"Calculating matrix multiplication on {device}...")
-    result = torch.matmul(A, B)
+    
+    # 無限ループ内で行列の積を計算
+    while 1:
+        result = torch.matmul(A, B)
 
     print("Matrix multiplication completed.")
 

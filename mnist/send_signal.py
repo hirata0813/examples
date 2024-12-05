@@ -65,7 +65,7 @@ def send_signal(pid, signal):
 def control_gpu_process():
     # ここでGPUプログラムの停止・再開を行う
     stop_gpu_process()
-    time.sleep(1)
+    time.sleep(7)
     cont_gpu_process()
 
 def main():
