@@ -47,7 +47,7 @@ def main():
         device = torch.device("cpu")
 
 
-    # 15000 x 15000のランダム行列を作成
+    # 100 x 100のランダム行列を作成
     matrix_size = 100
     A = torch.randn(matrix_size, matrix_size)  # CPU上で作成
     B = torch.randn(matrix_size, matrix_size)
