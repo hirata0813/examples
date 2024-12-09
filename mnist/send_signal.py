@@ -4,11 +4,12 @@ import signal
 import errno
 import subprocess
 import time
+import sys
 
-def stop_gpu_process():
+def stop_gpu_process(target):
     try:
         # 実行中のプロセスを検索
-        result = subprocess.run(["pgrep", "-f", "test1.py"], capture_output=True, text=True)
+        result = subprocess.run(["pgrep", "-f", target], capture_output=True, text=True)
         pids = result.stdout.strip().split("\n")
         current_pid = os.getpid() # 自身のPIDを取得
         pids = [pid for pid in pids if pid and int(pid) != current_pid] # pidsから自身のPIDを除外
@@ -30,10 +31,10 @@ def stop_gpu_process():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def cont_gpu_process():
+def cont_gpu_process(target):
     try:
         # 実行中のプロセスを検索
-        result = subprocess.run(["pgrep", "-f", "test1.py"], capture_output=True, text=True)
+        result = subprocess.run(["pgrep", "-f", target], capture_output=True, text=True)
         pids = result.stdout.strip().split("\n")
         current_pid = os.getpid() # 自身のPIDを取得
         pids = [pid for pid in pids if pid and int(pid) != current_pid] # pidsから自身のPIDを除外
@@ -62,14 +63,17 @@ def send_signal(pid, signal):
         if e.errno != errno.ESRCH: #「No such process」じゃない場合
             raise e
 
-def control_gpu_process():
+def control_gpu_process(target, sleeptime):
     # ここでGPUプログラムの停止・再開を行う
-    stop_gpu_process()
-    time.sleep(7)
-    cont_gpu_process()
+    stop_gpu_process(target)
+    time.sleep(sleeptime)
+    cont_gpu_process(target)
 
 def main():
-    control_gpu_process()
+    args = sys.argv
+    target = args[1]
+    sleeptime = int(args[2])
+    control_gpu_process(target, sleeptime)
 
 if __name__ == '__main__':
     # GPU プログラムはこのプログラムを実行するだけで良い

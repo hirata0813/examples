@@ -60,7 +60,7 @@ def main():
     
     i = 0
     # 無限ループ内で行列の積を計算
-    while 1:
+    while i<100000:
         print(f"Loop {i}")
         result = torch.matmul(A, B)
         i = i + 1
