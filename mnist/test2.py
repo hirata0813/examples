@@ -47,27 +47,27 @@ def main():
         device = torch.device("cpu")
 
 
-    # 100 x 100のランダム行列を作成
-    matrix_size = 100
+    # 15000 x 15000のランダム行列を作成
+    matrix_size = 15000
     A = torch.randn(matrix_size, matrix_size)  # CPU上で作成
     B = torch.randn(matrix_size, matrix_size)
 
-    # 行列を指定したデバイスに移動
     A = A.to(device)
     B = B.to(device)
-
-    print(f"Calculating matrix multiplication on {device}...")
-    
     i = 0
-    # 無限ループ内で行列の積を計算
-    while i<100000:
+    while 1:        
         print(f"Loop {i}")
-        result = torch.matmul(A, B)
-        i = i + 1
+        # 行列を指定したデバイスに移動
+        print(f"Finished transfering tensor to {device}...")
 
-    print("Matrix multiplication completed.")
+        # 行列の積を計算
+        print(f"Calculating matrix multiplication on {device}...")
+        result = torch.matmul(A, B)
+
+        print("Matrix multiplication completed.")
+        i = i + 1
 
 if __name__ == '__main__':
     main()
     # nvidia-smi を停止
-    stop_nvidia_smi()
+    #stop_nvidia_smi()
