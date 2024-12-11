@@ -7,7 +7,8 @@ import time
 import sys
 
 # 第一引数：シグナルを送る対象
-# 第二引数：シグナルを送る間隔
+# 第二引数：SIGSTOPとSIGCONTの間隔
+# 第三引数：SIGCONTとSIGKILLの間隔
 
 def stop_gpu_process(target):
     try:
@@ -110,21 +111,22 @@ def stop_nvidia_smi():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def control_gpu_process(target, sleeptime):
+def control_gpu_process(target, sleep1, sleep2):
     # ここでGPUプログラムの停止・再開を行う
     stop_gpu_process(target)
-    time.sleep(sleeptime)
+    time.sleep(sleep1)
     cont_gpu_process(target)
-    time.sleep(sleeptime)
+    time.sleep(sleep2)
     kill_gpu_process(target)
-    time.sleep(5)
+    time.sleep(3)
     stop_nvidia_smi()
 
 def main():
     args = sys.argv
     target = args[1]
-    sleeptime = int(args[2])
-    control_gpu_process(target, sleeptime)
+    sleep1 = int(args[2])
+    sleep2 = int(args[3])
+    control_gpu_process(target, sleep1, sleep2)
 
 
 if __name__ == '__main__':

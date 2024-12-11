@@ -1,13 +1,26 @@
-#!/bin/bash -eu
+#!/bin/zsh -eu
 
-# 1ショットの処理時間を求める
+### 行列積を計算し，1ショットの処理時間を求める
+###  第一引数：行列のサイズ
 
-# utilization.logの1行目を削除
-$PWD/remove_firstline.sh utilization.log
+# 前回のログファイルを削除
+LOG_FILE="time.txt"
 
-# 1ショットの処理時間を求める
+if [ -e ${LOG_FILE} ]; then
+  rm ${LOG_FILE}
+fi
+
+# GPU プログラムを開始
+# 第一引数：試行回数
+# 第二引数：行列のサイズ(N*N)
+# 第三引数：ループごとのインターバル
+./matmul.py 10 $1 3 
+
+# ログファイルの1行目を削除
+#./remove_firstline.sh time.txt
+# ログファイルから1ショットの時間を計算
 # 第一引数：稼働率のデータファイル
 # 第二引数：試行回数(default=10)
-# 第三引数：稼働率の閾値(default=0)
-# 第四引数：行列のサイズ(N*N)
-$PWD/calc_oneshot_time.py $1 $2 $3 $4
+# 第三引数：行列のサイズ(N*N)
+./calc_oneshot_time.py time.txt 10 $1
+
